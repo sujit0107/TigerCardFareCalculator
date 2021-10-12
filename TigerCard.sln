@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TigerCard", "TigerCard\TigerCard.csproj", "{265B9D47-24B6-4563-90DD-2EBC7B5A4804}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TigerCard.UnitTests", "TigerCard.UnitTests\TigerCard.UnitTests.csproj", "{37AFEB2A-1A20-4B88-B064-F1546CF69ADB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{265B9D47-24B6-4563-90DD-2EBC7B5A4804}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{265B9D47-24B6-4563-90DD-2EBC7B5A4804}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{265B9D47-24B6-4563-90DD-2EBC7B5A4804}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{265B9D47-24B6-4563-90DD-2EBC7B5A4804}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37AFEB2A-1A20-4B88-B064-F1546CF69ADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37AFEB2A-1A20-4B88-B064-F1546CF69ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37AFEB2A-1A20-4B88-B064-F1546CF69ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37AFEB2A-1A20-4B88-B064-F1546CF69ADB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {08443100-DBB3-4761-8652-9202AF5D0FA5}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Rules>
+
+	<PeakTimings>
+		<Timing Day="Monday" From="0700" To="1030"></Timing>
+		<Timing Day="Monday" From="1700" To="2000"></Timing>
+		<Timing Day="Tuesday" From="0700" To="1030"></Timing>
+		<Timing Day="Tuesday" From="1700" To="2000"></Timing>
+		<Timing Day="Wednesday" From="0700" To="1030"></Timing>
+		<Timing Day="Wednesday" From="1700" To="2000"></Timing>
+		<Timing Day="Thursday" From="0700" To="1030"></Timing>
+		<Timing Day="Thursday" From="1700" To="2000"></Timing>
+		<Timing Day="Friday" From="0700" To="1030"></Timing>
+		<Timing Day="Friday" From="1700" To="2000"></Timing>
+		<Timing Day="Saturday" From="0900" To="1100"></Timing>
+		<Timing Day="Saturday" From="1800" To="2200"></Timing>
+		<Timing Day="Sunday" From="0900" To="1100"></Timing>
+		<Timing Day="Sunday" From="1800" To="2200"></Timing>
+	</PeakTimings>
+
+	<Fares>
+		<Fare FromZone="1" ToZone="1" PeakHoursFare="30" OffPeakHourFare="25"></Fare>
+		<Fare FromZone="1" ToZone="2" PeakHoursFare="35" OffPeakHourFare="30"></Fare>
+		<Fare FromZone="2" ToZone="1" PeakHoursFare="35" OffPeakHourFare="30"></Fare>
+		<Fare FromZone="2" ToZone="2" PeakHoursFare="25" OffPeakHourFare="20"></Fare>
+	</Fares>
+	<Capings>
+		<Caping FromZone="1" ToZone="1" DailyCap="100" WeeklyCap="500"></Caping>
+		<Caping FromZone="1" ToZone="2" DailyCap="120" WeeklyCap="600"></Caping>
+		<Caping FromZone="2" ToZone="1" DailyCap="120" WeeklyCap="600"></Caping>
+		<Caping FromZone="2" ToZone="2" DailyCap="80" WeeklyCap="400"></Caping>
+	</Capings>
+</Rules>
