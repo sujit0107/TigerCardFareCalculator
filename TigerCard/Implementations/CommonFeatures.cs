@@ -9,15 +9,15 @@ namespace TigerCard.Implementations
     public class CommonFeatures : ICommonFeatures
     {
 
-        private int weekwiseTotalFare;
+        private int weekWiseTotalFare;
 
         private FarthestDayWiseDistanceZones farthestZonesInADay;
         private FarthestWeekWiseDistance farthestZonesInAWeek;
         private readonly IRulesReader rulesReader;
 
         public int CurrentWeek { get; set; }
-        public int DaywiseTotalFare { get; set; } 
-        public bool IsnewWeek { get; private set; }
+        public int DayWiseTotalFare { get; set; } 
+        public bool IsNewWeek { get; private set; }
         public Rules FareCalculationRules { get; set; }
 
         public List<FarthestDayWiseDistanceZones> FarthestZonesDayWise { get; set; } = new List<FarthestDayWiseDistanceZones>();
@@ -27,7 +27,7 @@ namespace TigerCard.Implementations
         {
             try
             {
-                IsnewWeek = CurrentWeek != week;
+                IsNewWeek = CurrentWeek != week;
                 CurrentWeek = week;
             }
             catch
@@ -41,7 +41,7 @@ namespace TigerCard.Implementations
         public CommonFeatures(IRulesReader rulesReader)
         {
             this.rulesReader = rulesReader;
-            FareCalculationRules = this.rulesReader.PopulatesRules();
+            FareCalculationRules = this.rulesReader.PopulateRules();
         }
 
 
@@ -50,9 +50,14 @@ namespace TigerCard.Implementations
         {
             try
             {
-                var farthestzonesTravelled = farthestZonesDayWise.FirstOrDefault(s => s.Day.Equals(day) && s.Week == week);
-                var dailycappedfare = GetZoneWiseDailyCappedFare(farthestzonesTravelled.FromZone, farthestzonesTravelled.ToZone);
-                return dailycappedfare;
+                var farthestZonesTraveled = farthestZonesDayWise.FirstOrDefault(s => s.Day.Equals(day) && s.Week == week);
+                if (farthestZonesTraveled != null)
+                {
+                    var dailyCappedFare = GetZoneWiseDailyCappedFare(farthestZonesTraveled.FromZone, farthestZonesTraveled.ToZone);
+                    return dailyCappedFare;
+                }
+
+                return 0;
             }
             catch
             {
@@ -64,8 +69,8 @@ namespace TigerCard.Implementations
         {
             try
             {
-                var dailycappedfare = FareCalculationRules.Capings.Where(s => s.FromZone == fromZone && s.ToZone == toZone).Select(s => s.DailyCap).FirstOrDefault();
-                return dailycappedfare;
+                var dailyCappedFare = FareCalculationRules.Capings.Where(s => s.FromZone == fromZone && s.ToZone == toZone).Select(s => s.DailyCap).FirstOrDefault();
+                return dailyCappedFare;
             }
             catch
             {
@@ -75,8 +80,8 @@ namespace TigerCard.Implementations
 
         public int GetZoneWiseWeeklyCappedFare(int fromZone, int toZone)
         {
-            var weeklycappedfare = FareCalculationRules.Capings.Where(s => s.FromZone == fromZone && s.ToZone == toZone).Select(s => s.WeeklyCap).FirstOrDefault();
-            return weeklycappedfare;
+            var weeklyCappedFare = FareCalculationRules.Capings.Where(s => s.FromZone == fromZone && s.ToZone == toZone).Select(s => s.WeeklyCap).FirstOrDefault();
+            return weeklyCappedFare;
         }
 
         public bool CheckIfPeakHour(string day, int time)
@@ -118,12 +123,12 @@ namespace TigerCard.Implementations
         {
             try
             {
-                DaywiseTotalFare = DaywiseTotalFare + journeyFare;
-                if (DaywiseTotalFare > dailyCappedFare)
+                DayWiseTotalFare = DayWiseTotalFare + journeyFare;
+                if (DayWiseTotalFare > dailyCappedFare)
                 {
-                    DaywiseTotalFare = dailyCappedFare;
+                    DayWiseTotalFare = dailyCappedFare;
                 }
-                return DaywiseTotalFare;
+                return DayWiseTotalFare;
             }
             catch
             {
@@ -133,20 +138,20 @@ namespace TigerCard.Implementations
 
 
 
-        public int CalculateWeeklyFare(int weeklyCappedFare, int daywiseFare)
+        public int CalculateWeeklyFare(int weeklyCappedFare, int dayWiseFare)
         {
             try
             {
-                if (IsnewWeek)
+                if (IsNewWeek)
                 {
-                    weekwiseTotalFare = 0;
+                    weekWiseTotalFare = 0;
                 }
-                weekwiseTotalFare = weekwiseTotalFare + daywiseFare;
-                if (weekwiseTotalFare > weeklyCappedFare)
+                weekWiseTotalFare = weekWiseTotalFare + dayWiseFare;
+                if (weekWiseTotalFare > weeklyCappedFare)
                 {
-                    weekwiseTotalFare = weeklyCappedFare;
+                    weekWiseTotalFare = weeklyCappedFare;
                 }
-                return weekwiseTotalFare;
+                return weekWiseTotalFare;
             }
             catch
             {
@@ -154,7 +159,7 @@ namespace TigerCard.Implementations
             }
         }
 
-        public List<FarthestDayWiseDistanceZones> GetFarthestZonesTravelledInADay(List<Journey> journeys)
+        public List<FarthestDayWiseDistanceZones> GetFarthestZonesTraveledInADay(List<Journey> journeys)
         {
             try
             {
@@ -178,11 +183,11 @@ namespace TigerCard.Implementations
             }
             catch
             {
-                throw new Exception("Unable to get farthest zone travelled in a day");
+                throw new Exception("Unable to get farthest zone traveled in a day");
             }
         }
 
-        public List<FarthestWeekWiseDistance> GetFarthestZonesTravelledInAWeek(List<Journey> journeys)
+        public List<FarthestWeekWiseDistance> GetFarthestZonesTraveledInAWeek(List<Journey> journeys)
         {
             try
             {
@@ -208,7 +213,7 @@ namespace TigerCard.Implementations
             }
             catch
             {
-                throw new Exception("Unable to get farthest zone travelled in a week");
+                throw new Exception("Unable to get farthest zone traveled in a week");
             }
         }
     }

@@ -6,7 +6,7 @@ namespace TigerCard.Implementations
 {
     public class XmlFileRulesReader : IRulesReader
     {
-        public Rules PopulatesRules()
+        public Rules PopulateRules()
         {
             try
             {

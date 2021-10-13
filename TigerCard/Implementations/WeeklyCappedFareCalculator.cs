@@ -9,52 +9,57 @@ namespace TigerCard.Implementations
     public class WeeklyCappedFareCalculator : IFareCalculator
     {
         private bool isPeakHour;
-        private int dayfare;
+        private int dayFare;
         public List<FarthestDayWiseDistanceZones> FarthestZonesDayWise { get; set; }
         public List<FarthestWeekWiseDistance> FarthestZonesWeekWise { get; set; }
 
-        private readonly ICommonFeatures commonfeatures;
+        private readonly ICommonFeatures commonFeatures;
         public WeeklyCappedFareCalculator(ICommonFeatures commonFeatures)
         {
-            commonfeatures = commonFeatures;
+            this.commonFeatures = commonFeatures;
         }
         public int CalculateFare(List<Journey> journeys)
         {
             try
             {
-                int totalfare = 0;
+                int totalFare = 0;
 
-                FarthestZonesDayWise = commonfeatures.GetFarthestZonesTravelledInADay(journeys);
+                FarthestZonesDayWise = commonFeatures.GetFarthestZonesTraveledInADay(journeys);
 
-                FarthestZonesWeekWise = commonfeatures.GetFarthestZonesTravelledInAWeek(journeys);
+                FarthestZonesWeekWise = commonFeatures.GetFarthestZonesTraveledInAWeek(journeys);
 
-                foreach (var journey in journeys.GroupBy(s => new { s.Week, s.Day }).Select(s => new {s.Key.Week, s.Key.Day, journeydetails = s.ToList() }))
+                foreach (var journey in journeys.GroupBy(s => new { s.Week, s.Day })
+                    .Select(s => new { s.Key.Week, s.Key.Day, journeydetails = s.ToList() }))
                 {
-                    commonfeatures.CheckIfWeekChanged(journey.Week);
-                    commonfeatures.DaywiseTotalFare = 0;
+                    commonFeatures.CheckIfWeekChanged(journey.Week);
+                    commonFeatures.DayWiseTotalFare = 0;
 
-                    var dailyCappedFare = commonfeatures.GetSpecificDayCappedFare(journey.Week, journey.Day, FarthestZonesDayWise);
-                    var weeklyCappedFare = commonfeatures.GetZoneWiseWeeklyCappedFare(FarthestZonesWeekWise.FirstOrDefault(s => s.Week == journey.Week).FromZone, FarthestZonesWeekWise.FirstOrDefault(s => s.Week == journey.Week).ToZone);
+                    var dailyCappedFare = commonFeatures.GetSpecificDayCappedFare(journey.Week, journey.Day, FarthestZonesDayWise);
+
+                    var farthestFromZone = FarthestZonesWeekWise.FirstOrDefault(s => s.Week == journey.Week)?.FromZone ?? 0;
+                    var farthestToZone = FarthestZonesWeekWise.FirstOrDefault(s => s.Week == journey.Week)?.ToZone ?? 0;
+
+                    var weeklyCappedFare = commonFeatures.GetZoneWiseWeeklyCappedFare(farthestFromZone, farthestToZone);
 
                     foreach (var detail in journey.journeydetails)
                     {
-
-                        isPeakHour = commonfeatures.CheckIfPeakHour(detail.Day, detail.Time);
-                        var journeyFare = commonfeatures.GetFare(detail.FromZone, detail.ToZone, isPeakHour);
-                        dayfare = commonfeatures.CalculateDayWiseFare(dailyCappedFare, journeyFare);
+                        isPeakHour = commonFeatures.CheckIfPeakHour(detail.Day, detail.Time);
+                        var journeyFare = commonFeatures.GetFare(detail.FromZone, detail.ToZone, isPeakHour);
+                        dayFare = commonFeatures.CalculateDayWiseFare(dailyCappedFare, journeyFare);
                     }
 
-                    var totalweeklyfare = commonfeatures.CalculateWeeklyFare(weeklyCappedFare, dayfare);
-                    if (!commonfeatures.IsnewWeek)
+                    var totalWeeklyFare = commonFeatures.CalculateWeeklyFare(weeklyCappedFare, dayFare);
+
+                    if (!commonFeatures.IsNewWeek)
                     {
-                        totalfare = totalweeklyfare;
+                        totalFare = totalWeeklyFare;
                     }
                     else
-                        totalfare = totalfare + totalweeklyfare;
+                        totalFare = totalFare + totalWeeklyFare;
 
                 }
 
-                return totalfare;
+                return totalFare;
             }
             catch
             {

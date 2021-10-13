@@ -9,7 +9,7 @@ namespace TigerCard
 {
     public class InputFileReader
     {
-        int totalfare;
+        int totalFare;
         public void ReadInputFile()
         {
             var serviceProvider = new ServiceCollection()
@@ -23,28 +23,43 @@ namespace TigerCard
 
             foreach (string line in lines)
             {
-                Console.WriteLine("\t" + line);
-                var inputdata = line.Split("|");
-                if (!inputdata[0].Trim().Equals("Date", StringComparison.InvariantCultureIgnoreCase) && inputdata.Length > 1)
+                try
                 {
-                    Journey obj = new Journey
-                    {
-                        Date = Convert.ToDateTime(inputdata[0].Trim()),
-                        Time = Convert.ToInt32(inputdata[1].Trim().Replace(":", string.Empty)),
-                        FromZone = Convert.ToInt32(inputdata[2].Trim()),
-                        ToZone = Convert.ToInt32(inputdata[3].Trim())
-                    };
 
-                    journeys.Add(obj);
+                    Console.WriteLine("\t" + line);
+                    var inputData = line.Split("|");
+                    if (!inputData[0].Trim().Equals("Date", StringComparison.InvariantCultureIgnoreCase) && inputData.Length > 1)
+                    {
+                        Journey obj = new Journey
+                        {
+                            Date = Convert.ToDateTime(inputData[0].Trim()),
+                            Time = Convert.ToInt32(inputData[1].Trim().Replace(":", string.Empty)),
+                            FromZone = Convert.ToInt32(inputData[2].Trim()),
+                            ToZone = Convert.ToInt32(inputData[3].Trim())
+                        };
+
+                        journeys.Add(obj);
+                    }
+                    else if (journeys.Count > 0)
+                    {
+                        var fareCalculator = serviceProvider.GetService<IFareCalculator>();
+                        if (fareCalculator != null) totalFare = fareCalculator.CalculateFare(journeys);
+                        if (totalFare == 0)
+                            Console.WriteLine("TotalFare :" + totalFare + ". Provided invalid input values");
+                        else
+                        {
+                            Console.WriteLine("TotalFare :" + totalFare);
+                        }
+
+                        Console.WriteLine("       -------------------------------------------------------------------------------------");
+                        totalFare = 0;
+                        journeys.Clear();
+                    }
                 }
-                else if (journeys.Count > 0)
+                catch (Exception e)
                 {
-                    var fareCalculator = serviceProvider.GetService<IFareCalculator>();
-                    if (fareCalculator != null) totalfare = fareCalculator.CalculateFare(journeys);
-                    Console.WriteLine("TotalFare :" + totalfare);
-                    Console.WriteLine("       -------------------------------------------------------------------------------------");
-                    totalfare = 0;
-                    journeys.Clear();
+                    Console.WriteLine(e.Message + ". Provided invalid input values ");
+
                 }
 
             }

@@ -42,14 +42,14 @@ namespace TigerCard.UnitTests
         [TestMethod]
         public void GetFarthestZoneDayWiseTest()
         {
-            var farthestZones = CommonFeaturesObj.GetFarthestZonesTravelledInADay(Inputs);
+            var farthestZones = CommonFeaturesObj.GetFarthestZonesTraveledInADay(Inputs);
             Assert.AreEqual(6, farthestZones.Count);
         }
 
         [TestMethod]
         public void GetFarthestZoneDayWiseForSpecificDayTest()
         {
-            var farthestZones = CommonFeaturesObj.GetFarthestZonesTravelledInADay(Inputs);
+            var farthestZones = CommonFeaturesObj.GetFarthestZonesTraveledInADay(Inputs);
             var farthestZoneOnModay = farthestZones.Where(s => s.Day.Equals("Monday", StringComparison.InvariantCultureIgnoreCase) && s.Week == 41).FirstOrDefault();
 
             Assert.AreEqual("Monday", farthestZoneOnModay.Day);
@@ -61,7 +61,7 @@ namespace TigerCard.UnitTests
         [TestMethod]
         public void GetFarthestZoneWeekWiseTest()
         {
-            var farthestZones = CommonFeaturesObj.GetFarthestZonesTravelledInAWeek(Inputs);
+            var farthestZones = CommonFeaturesObj.GetFarthestZonesTraveledInAWeek(Inputs);
             Assert.AreEqual(1, farthestZones.FirstOrDefault().FromZone);
             Assert.AreEqual(2, farthestZones.FirstOrDefault().ToZone);
         }
@@ -85,7 +85,7 @@ namespace TigerCard.UnitTests
         [TestMethod]
         public void GetSpecificDayCappedFareTest()
         {
-            var farthestZonesDayWise = CommonFeaturesObj.GetFarthestZonesTravelledInADay(Inputs);
+            var farthestZonesDayWise = CommonFeaturesObj.GetFarthestZonesTraveledInADay(Inputs);
             var dailycappedfare = CommonFeaturesObj.GetSpecificDayCappedFare(41, "Monday", farthestZonesDayWise);
             Assert.AreEqual(120, dailycappedfare);
 

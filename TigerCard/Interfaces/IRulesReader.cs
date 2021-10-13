@@ -4,6 +4,6 @@ namespace TigerCard.Interfaces
 {
     public interface IRulesReader
     {
-        Rules PopulatesRules();
+        Rules PopulateRules();
     }
 }
